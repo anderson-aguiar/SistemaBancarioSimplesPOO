@@ -1,10 +1,9 @@
 package model;
 
-public abstract class Account implements BankOperations{
+public abstract class Account implements IBankOperations {
     private String number;
     private double balance;
     private Client client;
-
 
     public Account(String number, double balance, Client client) {
         this.number = number;
@@ -40,15 +39,15 @@ public abstract class Account implements BankOperations{
         if (value > 0.0) {
             this.balance += value;
         } else {
-            System.out.println("Must be greater than O");
+            System.out.println("Valor precisa ser positivo!!!\"");
         }
     }
 
     public void withdraw(double value) {
         if (value <= 0.0) {
-            System.out.println("Must be greater than 0");
+            System.out.println("Valor precisa ser positivo!!!");
         } else if (value > this.balance) {
-            System.out.println("Balance isn't enough");
+            System.out.println("Saldo insuficiente");
         } else {
             this.balance -= value;
         }

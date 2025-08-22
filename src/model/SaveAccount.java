@@ -13,7 +13,7 @@ public class SaveAccount extends Account {
 
     @Override
     public String toString() {
-        return "Current Account\n"
+        return "Conta poupança\n"
                 + "-".repeat(15)
                 + "\nNome: " + this.getClient().getName()
                 + "\nConta: " + this.getNumber()

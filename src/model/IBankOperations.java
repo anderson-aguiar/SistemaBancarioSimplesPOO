@@ -1,6 +1,6 @@
 package model;
 
-public interface BankOperations {
+public interface IBankOperations {
     void deposit(double value);
     void withdraw(double value);
 }
