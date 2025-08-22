@@ -43,7 +43,7 @@ public class App {
                     }
                 }
                 if (hasCurrentAccount) {
-                    System.out.print("\nCliente com conta já cadastrada");
+                    System.out.print("\n>>Cliente com conta já cadastrada");
                 } else {
                     System.out.print("Deposito inicial: R$ ");
                     double initialDeposit = sc.nextDouble();
@@ -56,7 +56,7 @@ public class App {
 
             } else if (option == 2) {
                 boolean hasSaveAccount = false;
-                //Verifica se o cliente já tem conta corrente
+                //Verifica se o cliente já tem conta poupança
                 for (Account acc : accountSet) {
                     if (acc instanceof SaveAccount && acc.getClient().equals(client)) {
                         hasSaveAccount = true;
@@ -64,7 +64,7 @@ public class App {
                     }
                 }
                 if (hasSaveAccount) {
-                    System.out.print("\nCliente com conta já cadastrada");
+                    System.out.print("\n>>Cliente com conta já cadastrada\n");
                 } else {
                     System.out.print("Deposito inicial: R$ ");
                     double initialDeposit = sc.nextDouble();
@@ -91,20 +91,47 @@ public class App {
                     }
                 }
                 if (!found) {
-                    System.out.println("Cliente não tem conta corrente cadastrada!!");
+                    System.out.println(">>Cliente não tem conta corrente cadastrada!!");
                 }
             } else if (option == 5) {
                 boolean found = false;
                 for (Account acc : accountSet) {
-                    if (acc instanceof SaveAccount && acc.getClient().equals(client)) {
-                        acc.addInterest();
-                        System.out.println("Juros aplicados com sucesso!!!");
+                    if (acc instanceof CurrentAccount && acc.getClient().equals(client)) {
+                        System.out.print("Informe o valor: R$ ");
+                        double v = sc.nextDouble();
+                        acc.deposit(v);
                         found = true;
                         break;
                     }
                 }
                 if (!found) {
-                    System.out.println("Cliente não tem conta poupança cadastrada!!");
+                    System.out.println(">>Cliente não tem conta corrente cadastrada!!");
+                }
+            } else if (option == 6) {
+                boolean found = false;
+                for (Account acc : accountSet) {
+                    if (acc instanceof SaveAccount && acc.getClient().equals(client)) {
+                        acc.addInterest();
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    System.out.println(">>Cliente não tem conta poupança cadastrada!!");
+                }
+            } else if (option == 7) {
+                boolean found = false;
+                for (Account acc : accountSet) {
+                    if (acc instanceof SaveAccount && acc.getClient().equals(client)) {
+                        System.out.print("Informe o valor: R$ ");
+                        double v = sc.nextDouble();
+                        acc.withdraw(v);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    System.out.println(">>Cliente não tem conta poupança cadastrada!!");
                 }
             } else if (option == 0) {
                 System.out.println("---> Obrigado <---");
@@ -129,7 +156,9 @@ public class App {
                 + "\n2 - Criar conta poupança: "
                 + "\n3 - Verificar minhas contas: "
                 + "\n4 - Sacar conta corrente: "
-                + "\n5 - Adicionar juros conta poupança: "
+                + "\n5 - Depositar conta corrente: "
+                + "\n6 - Adicionar juros conta poupança: "
+                + "\n7 - Sacar conta poupança: "
                 + "\n0 - Sair\n");
         option = sc.nextInt();
         return option;

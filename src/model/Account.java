@@ -26,7 +26,6 @@ public abstract class Account implements IBankOperations {
         return balance;
     }
 
-
     public Client getClient() {
         return client;
     }
@@ -38,18 +37,20 @@ public abstract class Account implements IBankOperations {
     public void deposit(double value) {
         if (value > 0.0) {
             this.balance += value;
+            System.out.println("\n>>Sucesso.\n");
         } else {
-            System.out.println("Valor precisa ser positivo!!!\"");
+            System.out.println(">>Valor precisa ser positivo!\"");
         }
     }
 
     public void withdraw(double value) {
         if (value <= 0.0) {
-            System.out.println("Valor precisa ser positivo!!!");
+            System.out.println(">>Valor precisa ser positivo!");
         } else if (value > this.balance) {
-            System.out.println("Saldo insuficiente");
+            System.out.println(">>Saldo insuficiente");
         } else {
             this.balance -= value;
+            System.out.println("\n>>Saque de R$ " + value + " realizado com sucesso.\n");
         }
     }
 
