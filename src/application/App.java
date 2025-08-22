@@ -133,6 +133,20 @@ public class App {
                 if (!found) {
                     System.out.println(">>Cliente não tem conta poupança cadastrada!!");
                 }
+            } else if (option == 8) {
+                boolean found = false;
+                for (Account acc : accountSet) {
+                    if (acc instanceof SaveAccount && acc.getClient().equals(client)) {
+                        System.out.print("Informe o valor: R$ ");
+                        double v = sc.nextDouble();
+                        acc.deposit(v);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    System.out.println(">>Cliente não tem conta poupança cadastrada!!");
+                }
             } else if (option == 0) {
                 System.out.println("---> Obrigado <---");
             } else {
@@ -159,6 +173,7 @@ public class App {
                 + "\n5 - Depositar conta corrente: "
                 + "\n6 - Adicionar juros conta poupança: "
                 + "\n7 - Sacar conta poupança: "
+                + "\n8 - Depositar poupança: "
                 + "\n0 - Sair\n");
         option = sc.nextInt();
         return option;
