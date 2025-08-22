@@ -34,14 +34,7 @@ public class App {
         while (option != 0) {
             option = menu();
             if (option == 1) {
-                boolean hasCurrentAccount = false;
-                //Verifica se o cliente já tem conta corrente
-                for (Account acc : accountSet) {
-                    if (acc instanceof CurrentAccount && acc.getClient().equals(client)) {
-                        hasCurrentAccount = true;
-                        break;
-                    }
-                }
+                boolean hasCurrentAccount = hasCurrentAccount(client, accountSet);
                 if (hasCurrentAccount) {
                     System.out.print("\n>>Cliente com conta já cadastrada");
                 } else {
@@ -55,21 +48,13 @@ public class App {
                 }
 
             } else if (option == 2) {
-                boolean hasSaveAccount = false;
-                //Verifica se o cliente já tem conta poupança
-                for (Account acc : accountSet) {
-                    if (acc instanceof SaveAccount && acc.getClient().equals(client)) {
-                        hasSaveAccount = true;
-                        break;
-                    }
-                }
+                boolean hasSaveAccount = hasSaveAccount(client, accountSet);
                 if (hasSaveAccount) {
                     System.out.print("\n>>Cliente com conta já cadastrada\n");
                 } else {
                     System.out.print("Deposito inicial: R$ ");
                     double initialDeposit = sc.nextDouble();
-                    int n = random.nextInt(999);
-                    String accountNumber = String.valueOf(n);
+                    String accountNumber = String.format("%03d", random.nextInt(1000));
                     SaveAccount saveAccount = new SaveAccount(accountNumber, initialDeposit, client);
                     accountSet.add(saveAccount);
                 }
@@ -80,71 +65,47 @@ public class App {
                 }
 
             } else if (option == 4) {
-                boolean found = false;
-                for (Account acc : accountSet) {
-                    if (acc instanceof CurrentAccount && acc.getClient().equals(client)) {
-                        System.out.print("Informe o valor: R$ ");
-                        double v = sc.nextDouble();
-                        acc.withdraw(v);
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
+                Account c = getCurrentAccount(accountSet, client);
+                if (c != null) {
+                    System.out.print("Informe o valor: R$ ");
+                    double v = sc.nextDouble();
+                    c.withdraw(v);
+                } else {
                     System.out.println(">>Cliente não tem conta corrente cadastrada!!");
                 }
+
             } else if (option == 5) {
-                boolean found = false;
-                for (Account acc : accountSet) {
-                    if (acc instanceof CurrentAccount && acc.getClient().equals(client)) {
-                        System.out.print("Informe o valor: R$ ");
-                        double v = sc.nextDouble();
-                        acc.deposit(v);
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
+                Account c = getCurrentAccount(accountSet, client);
+                if (c != null) {
+                    System.out.print("Informe o valor: R$ ");
+                    double v = sc.nextDouble();
+                    c.deposit(v);
+                } else {
                     System.out.println(">>Cliente não tem conta corrente cadastrada!!");
                 }
             } else if (option == 6) {
-                boolean found = false;
-                for (Account acc : accountSet) {
-                    if (acc instanceof SaveAccount && acc.getClient().equals(client)) {
-                        acc.addInterest();
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
+                Account c = getSaveAccount(accountSet, client);
+                if (c != null) {
+                    c.addInterest();
+                } else {
                     System.out.println(">>Cliente não tem conta poupança cadastrada!!");
                 }
             } else if (option == 7) {
-                boolean found = false;
-                for (Account acc : accountSet) {
-                    if (acc instanceof SaveAccount && acc.getClient().equals(client)) {
-                        System.out.print("Informe o valor: R$ ");
-                        double v = sc.nextDouble();
-                        acc.withdraw(v);
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
+                Account c = getSaveAccount(accountSet, client);
+                if (c != null) {
+                    System.out.print("Informe o valor: R$ ");
+                    double v = sc.nextDouble();
+                    c.withdraw(v);
+                } else {
                     System.out.println(">>Cliente não tem conta poupança cadastrada!!");
                 }
             } else if (option == 8) {
-                boolean found = false;
-                for (Account acc : accountSet) {
-                    if (acc instanceof SaveAccount && acc.getClient().equals(client)) {
-                        System.out.print("Informe o valor: R$ ");
-                        double v = sc.nextDouble();
-                        acc.deposit(v);
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
+                Account c = getSaveAccount(accountSet, client);
+                if (c != null) {
+                    System.out.print("Informe o valor: R$ ");
+                    double v = sc.nextDouble();
+                    c.deposit(v);
+                } else {
                     System.out.println(">>Cliente não tem conta poupança cadastrada!!");
                 }
             } else if (option == 0) {
@@ -160,6 +121,41 @@ public class App {
         //format XXX.XXX.XXX-XX
         String regex = "^(\\d{11}|\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2})$";
         return cpf != null && cpf.matches(regex);
+    }
+
+    public static boolean hasCurrentAccount(Client client, Set<Account> accounts) {
+        for (Account acc : accounts) {
+            if (acc instanceof CurrentAccount && acc.getClient().equals(client)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean hasSaveAccount(Client client, Set<Account> accounts) {
+        for (Account acc : accounts) {
+            if (acc instanceof SaveAccount && acc.getClient().equals(client)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Account getSaveAccount(Set<Account> accounts, Client client) {
+        for (Account acc : accounts) {
+            if (acc instanceof SaveAccount && acc.getClient().equals(client)) {
+                return acc;
+            }
+        }
+        return null;
+    }
+    public static Account getCurrentAccount(Set<Account> accounts, Client client) {
+        for (Account acc : accounts) {
+            if (acc instanceof CurrentAccount && acc.getClient().equals(client)) {
+                return acc;
+            }
+        }
+        return null;
     }
 
     public static int menu() {
